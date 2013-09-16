@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>VisionDataset</display-name>
+	<listener>
+		<listener-class>br.usp.ime.vision.dataset.tiles.TilesListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>br.usp.ime.vision.dataset.util.Configs</listener-class>
+	</listener>
+	<servlet>
+		<servlet-name>ImagesServlet</servlet-name>
+		<servlet-class>br.usp.ime.vision.dataset.servlet.ImagesServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ImagesServlet</servlet-name>
+		<url-pattern>/images/*</url-pattern>
+		<url-pattern>/thumbnails/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>JerseyWebApplication</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>br.usp.ime.vision.dataset.ws</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JerseyWebApplication</servlet-name>
+		<url-pattern>/ws/*</url-pattern>
+	</servlet-mapping>
+
+
+
+	<filter>
+		<filter-name>Struts2</filter-name>
+		<filter-class>
+			org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter
+		</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>Struts2</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	<env-entry>
+		<env-entry-name>ConfDir</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>/etc/visionDataset/conf</env-entry-value>
+	</env-entry>
+	<env-entry>
+		<env-entry-name>MessagesFile</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>MessageResources.properties</env-entry-value>
+	</env-entry>
+	<env-entry>
+		<env-entry-name>ExtensionsFile</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>mimeTypeExtensions.properties</env-entry-value>
+	</env-entry>
+	<env-entry>
+		<env-entry-name>ScriptsDir</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>/var/local/visionDataset/scripts</env-entry-value>
+	</env-entry>
+	<env-entry>
+		<env-entry-name>ImagesDir</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>/var/local/visionDataset/images</env-entry-value>
+	</env-entry>
+	<env-entry>
+		<env-entry-name>AttachmentDir</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>/var/local/visionDataset/attachments</env-entry-value>
+	</env-entry>
+	<env-entry>
+		<env-entry-name>ThumbnailsDir</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>/var/local/visionDataset/thumbnails</env-entry-value>
+	</env-entry>
+	<env-entry>
+		<env-entry-name>ServerURL</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>http://www.escience.ime.usp.br/VisionDataset/</env-entry-value>
+	</env-entry>
+</web-app>

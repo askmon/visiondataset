@@ -1,0 +1,12 @@
+br/usp/ime/vision/dataset/tests/unit/AttachmentServiceTest.class
+br/usp/ime/vision/dataset/tests/concordion/UserTest.class
+br/usp/ime/vision/dataset/tests/unit/UserTest.class
+br/usp/ime/vision/dataset/tests/unit/AttachmentDAOimplTest.class
+br/usp/ime/vision/dataset/tests/unit/TagDaoTest.class
+br/usp/ime/vision/dataset/tests/unit/AttachmentUtilsTest.class
+br/usp/ime/vision/dataset/tests/unit/ImageServiceTest.class
+br/usp/ime/vision/dataset/tests/unit/DAOFactoryTest.class
+br/usp/ime/vision/dataset/tests/unit/TestDatabaseSetup.class
+br/usp/ime/vision/dataset/tests/unit/AllTests.class
+br/usp/ime/vision/dataset/tests/unit/AlbumDAOImplTest.class
+br/usp/ime/vision/dataset/tests/unit/ConfigsTest.class

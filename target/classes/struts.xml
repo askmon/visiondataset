@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<!-- <constant name="struts.enable.DynamicMethodInvocation" value="false"/> -->
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.custom.i18n.resources" value="MessageResources" />
+	<constant name="struts.multipart.maxSize" value="104857600" />
+	<constant name="struts.action.excludePattern" value="/ws/.*," />
+
+	<!-- <include file="example.xml"/> -->
+
+	<package name="default" namespace="/" extends="struts-default">
+
+		<interceptors>
+
+			<interceptor-stack name="appDefaultStack">
+				<interceptor-ref name="defaultStack">
+					<param name="exception.logEnabled">true</param>
+					<param name="exception.logLevel">ERROR</param>
+				</interceptor-ref>
+			</interceptor-stack>
+
+			<interceptor-stack name="storeStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="store">
+					<param name="operationMode">STORE</param>
+				</interceptor-ref>
+			</interceptor-stack>
+
+			<interceptor-stack name="retrieveStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="store">
+					<param name="operationMode">RETRIEVE</param>
+				</interceptor-ref>
+			</interceptor-stack>
+
+			<interceptor-stack name="imageUploadStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="fileUpload">
+					<param name="allowedTypes">image/png, image/gif, image/jpeg,
+						application/x-tar, application/x-gzip, application/zip,
+						application/rar, application/x-rar</param>
+				</interceptor-ref>
+			</interceptor-stack>
+
+		</interceptors>
+
+		<default-interceptor-ref name="appDefaultStack" />
+
+		<global-results>
+			<result name="error">/error.jsp</result>
+			<result name="unauthorizedAction" type="redirectAction">
+				UnauthorizedAction
+			</result>
+			<result name="invalidRequest" type="redirectAction">InvalidRequest</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception"
+				result="error" />
+		</global-exception-mappings>
+
+		<action name="Home">
+			<result>/home.jsp</result>
+		</action>
+
+		<action name="SignUp" class="br.usp.ime.vision.dataset.actions.user.SignUp">
+			<result>/createAccount.jsp</result>
+		</action>
+
+		<action name="UnauthorizedAction"
+			class="br.usp.ime.vision.dataset.actions.UnauthorizedAction">
+			<result>/home.jsp</result>
+		</action>
+
+		<action name="InvalidRequest" class="br.usp.ime.vision.dataset.actions.InvalidRequest">
+			<result>/home.jsp</result>
+		</action>
+
+		<action name="CreateAccount"
+			class="br.usp.ime.vision.dataset.actions.user.CreateAccount">
+			<result name="success">/home.jsp</result>
+			<result name="input">/createAccount.jsp</result>
+			<result name="cancel">/home.jsp</result>
+		</action>
+
+		<action name="AdminCreateAccount"
+			class="br.usp.ime.vision.dataset.actions.user.CreateAccount">
+			<interceptor-ref name="storeStack" />
+			<result name="successAdmin" type="redirectAction">ListUsers</result>
+			<result name="input">/createAccount.jsp</result>
+			<result name="cancel" type="redirectAction">ListUsers</result>
+		</action>
+
+		<action name="ConfirmEmail"
+			class="br.usp.ime.vision.dataset.actions.user.ConfirmEmail">
+			<result>/home.jsp</result>
+		</action>
+
+		<action name="ResendConfirmationEmail"
+			class="br.usp.ime.vision.dataset.actions.user.ResendConfirmationEmail">
+			<result>/home.jsp</result>
+		</action>
+
+		<action name="Login" class="br.usp.ime.vision.dataset.actions.user.Login">
+			<result name="success">/home.jsp</result>
+			<result name="error">/home.jsp</result>
+			<result name="input">/home.jsp</result>
+		</action>
+
+		<action name="Logout" class="br.usp.ime.vision.dataset.actions.user.Logout">
+			<result>/home.jsp</result>
+		</action>
+
+		<action name="ListUsers"
+			class="br.usp.ime.vision.dataset.actions.admin.ListUsers">
+			<interceptor-ref name="retrieveStack" />
+			<result>/listUsers.jsp</result>
+		</action>
+
+		<action name="RemoveUser"
+			class="br.usp.ime.vision.dataset.actions.admin.RemoveUser">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">ListUsers</result>
+			<result name="error" type="redirectAction">ListUsers</result>
+		</action>
+
+		<action name="ChangeUserActiveStatus"
+			class="br.usp.ime.vision.dataset.actions.admin.ChangeUserActiveStatus">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">ListUsers</result>
+			<result name="error" type="redirectAction">ListUsers</result>
+		</action>
+
+		<action name="AuthorizeAccount"
+			class="br.usp.ime.vision.dataset.actions.admin.AuthorizeAccount">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">ListUsers</result>
+			<result name="error" type="redirectAction">ListUsers</result>
+		</action>
+
+		<action name="SetUserPermission"
+			class="br.usp.ime.vision.dataset.actions.admin.SetUserPermission">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">ListUsers</result>
+			<result name="error" type="redirectAction">ListUsers</result>
+		</action>
+
+		<action name="Profile">
+			<result>/profile.jsp</result>
+		</action>
+
+		<action name="EditProfileData"
+			class="br.usp.ime.vision.dataset.actions.user.EditProfileData">
+			<result>/editProfile.jsp</result>
+		</action>
+
+		<action name="EditProfile"
+			class="br.usp.ime.vision.dataset.actions.user.EditProfile">
+			<result name="success">/profile.jsp</result>
+			<result name="input">/editProfile.jsp</result>
+			<result name="reconfirmationEmail">/home.jsp</result>
+			<result name="cancel">/profile.jsp</result>
+		</action>
+
+		<action name="CreateNewUser">
+			<result>/createAccount.jsp</result>
+		</action>
+
+		<action name="ChangePasswordData"
+			class="br.usp.ime.vision.dataset.actions.user.ChangePasswordData">
+			<result>/changePassword.jsp</result>
+		</action>
+
+		<action name="ChangePassword"
+			class="br.usp.ime.vision.dataset.actions.user.ChangePassword">
+			<result name="success">/profile.jsp</result>
+			<result name="input">/changePassword.jsp</result>
+			<result name="cancel">/profile.jsp</result>
+		</action>
+
+		<action name="PasswordRecovery"
+			class="br.usp.ime.vision.dataset.actions.user.PasswordRecovery">
+			<result name="success">/passwordLost.jsp</result>
+			<result name="error">/home.jsp</result>
+		</action>
+
+		<action name="PasswordLost"
+			class="br.usp.ime.vision.dataset.actions.user.PasswordLost">
+			<result name="success">/home.jsp</result>
+			<result name="input">/passwordLost.jsp</result>
+			<result name="errorEmail">/home.jsp</result>
+			<result name="cancel">/home.jsp</result>
+		</action>
+
+		<!-- ##### Albums ############################################################################# -->
+
+		<action name="ListAlbums"
+			class="br.usp.ime.vision.dataset.actions.album.ListAlbums">
+			<interceptor-ref name="retrieveStack" />
+			<result>/albums.jsp</result>
+		</action>
+
+		<action name="CreateAlbumData"
+			class="br.usp.ime.vision.dataset.actions.album.CreateAlbumData">
+			<result>/createAlbum.jsp</result>
+		</action>
+
+		<action name="CreateAlbum"
+			class="br.usp.ime.vision.dataset.actions.album.CreateAlbum">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">ListAlbums</result>
+			<result name="input">/createAlbum.jsp</result>
+			<result name="cancel" type="redirectAction">ListAlbums</result>
+		</action>
+
+		<action name="AlbumDetail"
+			class="br.usp.ime.vision.dataset.actions.album.AlbumDetail">
+			<interceptor-ref name="retrieveStack" />
+			<result>/album.jsp</result>
+		</action>
+
+		<action name="UploadImageData"
+			class="br.usp.ime.vision.dataset.actions.album.UploadImage" method="checkPermission">
+			<result>/uploadImage.jsp</result>
+		</action>
+
+		<action name="UploadImage"
+			class="br.usp.ime.vision.dataset.actions.album.UploadImage">
+			<interceptor-ref name="imageUploadStack" />
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${albumId}</param>
+			</result>
+			<result name="input">/uploadImage.jsp</result>
+			<result name="cancel" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${albumId}</param>
+			</result>
+		</action>
+
+		<action name="DeleteImage"
+			class="br.usp.ime.vision.dataset.actions.album.DeleteImage">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${albumId}</param>
+			</result>
+			<result name="error" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${albumId}</param>
+			</result>
+		</action>
+
+		<action name="RenameAlbumData"
+			class="br.usp.ime.vision.dataset.actions.album.RenameAlbumData">
+			<result>/renameAlbum.jsp</result>
+		</action>
+
+		<action name="RenameAlbum"
+			class="br.usp.ime.vision.dataset.actions.album.RenameAlbum">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${albumId}</param>
+			</result>
+			<result name="input">/renameAlbum.jsp</result>
+			<result name="cancel" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${albumId}</param>
+			</result>
+		</action>
+
+		<action name="EditAlbumPermissionsData"
+			class="br.usp.ime.vision.dataset.actions.album.EditAlbumPermissionsData">
+			<result>/editAlbumPermissions.jsp</result>
+		</action>
+
+		<action name="EditAlbumPermissions"
+			class="br.usp.ime.vision.dataset.actions.album.EditAlbumPermissions">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${album.id}</param>
+			</result>
+			<result name="error" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${album.id}</param>
+			</result>
+			<result name="cancel" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${album.id}</param>
+			</result>
+		</action>
+
+		<action name="CreateSubAlbumData"
+			class="br.usp.ime.vision.dataset.actions.album.CreateSubAlbumData">
+			<result>/createSubAlbum.jsp</result>
+		</action>
+
+		<action name="CreateSubAlbum"
+			class="br.usp.ime.vision.dataset.actions.album.CreateSubAlbum">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${album.id}</param>
+			</result>
+			<result name="input">/createSubAlbum.jsp</result>
+			<result name="cancel" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${album.id}</param>
+			</result>
+		</action>
+
+		<action name="DeleteAlbum"
+			class="br.usp.ime.vision.dataset.actions.album.DeleteAlbum">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${parentId}</param>
+			</result>
+			<result name="listAlbums" type="redirectAction">ListAlbums</result>
+			<result name="error" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${albumId}</param>
+			</result>
+		</action>
+
+		<action name="ChangeAlbumOwnerData"
+			class="br.usp.ime.vision.dataset.actions.album.ChangeAlbumOwner"
+			method="populateUsers">
+			<result>/changeAlbumOwner.jsp</result>
+		</action>
+
+		<action name="ChangeAlbumOwner"
+			class="br.usp.ime.vision.dataset.actions.album.ChangeAlbumOwner">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${album.id}</param>
+			</result>
+			<result name="input">/changeAlbumOwner.jsp</result>
+			<result name="cancel" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${album.id}</param>
+			</result>
+		</action>
+
+		<action name="MoveAlbumContentData"
+			class="br.usp.ime.vision.dataset.actions.album.MoveAlbumContent"
+			method="checkPermission">
+			<result>/moveAlbumContent.jsp</result>
+		</action>
+
+		<action name="MoveAlbumContent"
+			class="br.usp.ime.vision.dataset.actions.album.MoveAlbumContent">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${album.id}</param>
+			</result>
+			<result name="input">/moveAlbumContent.jsp</result>
+			<result name="cancel" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${album.id}</param>
+			</result>
+		</action>
+
+		<!-- ##### Images ############################################################################# -->
+
+		<action name="ImageDetail"
+			class="br.usp.ime.vision.dataset.actions.album.ImageDetail">
+			<interceptor-ref name="retrieveStack" />
+			<result>/image.jsp</result>
+		</action>
+
+        <!-- ###### Scripts ########################################################################## -->
+		<action name="runscript" class="br.usp.ime.vision.dataset.actions.album.ShowScript">
+            <result name="SUCCESS">/runscript.jsp</result>
+        </action>
+        
+
+		<!-- ##### Tags ############################################################################# -->
+
+		<action name="AddAlbumTagData"
+			class="br.usp.ime.vision.dataset.actions.tag.AlbumTagAction">
+			<result>/addAlbumTag.jsp</result>
+		</action>
+
+		<action name="AddImageTagData"
+			class="br.usp.ime.vision.dataset.actions.tag.ImageTagAction">
+			<result>/addImageTag.jsp</result>
+		</action>
+
+		<action name="AddAlbumTag"
+			class="br.usp.ime.vision.dataset.actions.tag.AddAlbumTag">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${albumId}</param>
+			</result>
+			<result name="input">/addAlbumTag.jsp</result>
+			<result name="cancel" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${albumId}</param>
+			</result>
+		</action>
+
+		<action name="AddImageTag"
+			class="br.usp.ime.vision.dataset.actions.tag.AddImageTag">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">ImageDetail</param>
+				<param name="imageId">${imageId}</param>
+			</result>
+			<result name="input">/addImageTag.jsp</result>
+			<result name="cancel" type="redirectAction">
+				<param name="actionName">ImageDetail</param>
+				<param name="imageId">${imageId}</param>
+			</result>
+		</action>
+
+		<action name="DeleteAlbumTag"
+			class="br.usp.ime.vision.dataset.actions.tag.DeleteAlbumTag">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${albumId}</param>
+			</result>
+			<result name="error" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${albumId}</param>
+			</result>
+		</action>
+
+		<action name="DeleteImageTag"
+			class="br.usp.ime.vision.dataset.actions.tag.DeleteImageTag">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">ImageDetail</param>
+				<param name="imageId">${imageId}</param>
+			</result>
+			<result name="error" type="redirectAction">
+				<param name="actionName">ImageDetail</param>
+				<param name="imageId">${imageId}</param>
+			</result>
+		</action>
+
+		<action name="RenameAlbumTagData"
+			class="br.usp.ime.vision.dataset.actions.tag.RenameAlbumTagData">
+			<result>/renameAlbumTag.jsp</result>
+		</action>
+
+		<action name="RenameImageTagData"
+			class="br.usp.ime.vision.dataset.actions.tag.RenameImageTagData">
+			<result>/renameImageTag.jsp</result>
+		</action>
+
+		<action name="RenameAlbumTag"
+			class="br.usp.ime.vision.dataset.actions.tag.RenameAlbumTag">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${albumId}</param>
+			</result>
+			<result name="input">/renameAlbumTag.jsp</result>
+			<result name="cancel" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${albumId}</param>
+			</result>
+		</action>
+
+		<action name="RenameImageTag"
+			class="br.usp.ime.vision.dataset.actions.tag.RenameImageTag">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">ImageDetail</param>
+				<param name="imageId">${imageId}</param>
+			</result>
+			<result name="input">/renameImageTag.jsp</result>
+			<result name="cancel" type="redirectAction">
+				<param name="actionName">ImageDetail</param>
+				<param name="imageId">${imageId}</param>
+			</result>
+		</action>
+
+		<action name="AnnotateImageData"
+			class="br.usp.ime.vision.dataset.actions.tag.ImageTagAction">
+			<result>/annotateImage.jsp</result>
+		</action>
+
+		<action name="AnnotateImage"
+			class="br.usp.ime.vision.dataset.actions.tag.AnnotateImage">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">ImageDetail</param>
+				<param name="imageId">${imageId}</param>
+			</result>
+			<result name="input">/annotateImage.jsp</result>
+			<result name="cancel" type="redirectAction">
+				<param name="actionName">ImageDetail</param>
+				<param name="imageId">${imageId}</param>
+			</result>
+		</action>
+
+		<action name="DeleteAnnotation"
+			class="br.usp.ime.vision.dataset.actions.tag.DeleteAnnotation">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">ImageDetail</param>
+				<param name="imageId">${imageId}</param>
+			</result>
+			<result name="error" type="redirectAction">
+				<param name="actionName">ImageDetail</param>
+				<param name="imageId">${imageId}</param>
+			</result>
+		</action>
+
+		<action name="EditAnnotationData"
+			class="br.usp.ime.vision.dataset.actions.tag.EditAnnotationData">
+			<result>/editAnnotation.jsp</result>
+		</action>
+
+		<action name="EditAnnotation"
+			class="br.usp.ime.vision.dataset.actions.tag.EditAnnotation">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">ImageDetail</param>
+				<param name="imageId">${imageId}</param>
+			</result>
+			<result name="input">/editAnnotation.jsp</result>
+			<result name="cancel" type="redirectAction">
+				<param name="actionName">ImageDetail</param>
+				<param name="imageId">${imageId}</param>
+			</result>
+		</action>
+
+		<action name="AnnotationFromTagData"
+			class="br.usp.ime.vision.dataset.actions.tag.AnnotationFromTag"
+			method="checkPermission">
+			<result>/annotationFromTag.jsp</result>
+		</action>
+
+		<action name="AnnotationFromTag"
+			class="br.usp.ime.vision.dataset.actions.tag.AnnotationFromTag">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">ImageDetail</param>
+				<param name="imageId">${imageId}</param>
+			</result>
+			<result name="input">/annotationFromTag.jsp</result>
+			<result name="cancel" type="redirectAction">
+				<param name="actionName">ImageDetail</param>
+				<param name="imageId">${imageId}</param>
+			</result>
+		</action>
+
+		<action name="MultiTagData"
+			class="br.usp.ime.vision.dataset.actions.tag.AlbumTagAction">
+			<result>/multiTag.jsp</result>
+		</action>
+
+		<action name="MultiTag" class="br.usp.ime.vision.dataset.actions.tag.MultiTag">
+			<interceptor-ref name="storeStack" />
+			<result name="success" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${albumId}</param>
+			</result>
+			<result name="input">/multiTag.jsp</result>
+			<result name="cancel" type="redirectAction">
+				<param name="actionName">AlbumDetail</param>
+				<param name="albumId">${albumId}</param>
+			</result>
+		</action>
+
+
+		<action name="SegmentIt"
+			class="br.usp.ime.vision.dataset.actions.album.SegmentIt">
+			<interceptor-ref name="retrieveStack" />
+			<result>/segmentit/launch.jnlp</result>
+		</action>
+
+
+	</package>
+
+</struts>

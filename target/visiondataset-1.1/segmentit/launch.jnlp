@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" codebase="http://localhost:8080/VisionDataset/segmentit/" version="1.0.3" >
+ <information>
+    <title>SegmentIt</title>
+    <vendor>Instituto de Matematica e Estatistica, Universidade de Sao Paulo</vendor>
+    <homepage href="http://watershed.sourceforge.net/"/>
+    <description kind="one-line">SegmentIt</description>
+    <shortcut online="false"><desktop/><menu submenu="SegmentIt"/></shortcut>
+ </information>
+ <security>
+ <all-permissions/>
+ </security>
+ <resources>
+    <j2se version="1.6+" initial-heap-size="32m" max-heap-size="128m" />
+    <property name="jnlp.versionEnabled" value="true"/>
+    
+<jar href="segmentit-1.0.3.jar" version="1.0.3" main="true"/>
+<jar href="gson-1.7.1.jar" version="1.7.1"/>
+<jar href="jersey-client-1.8.jar" version="1.8"/>
+<jar href="jersey-core-1.8.jar" version="1.8"/>
+<jar href="jersey-multipart-1.8.jar" version="1.8"/>
+<jar href="mimepull-1.4.jar" version="1.4"/>
+
+ </resources>
+ <application-desc main-class="br.usp.ime.klava.segmentit.gui.SegmentationContainer">
+ </application-desc>
+</jnlp>

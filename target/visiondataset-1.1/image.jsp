@@ -1,0 +1,329 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<%@ taglib uri="/struts-tags" prefix="s"%>
+<%@ taglib uri="/WEB-INF/tld/vision.tld" prefix="v"%>
+
+<jsp:useBean id="Constants"
+	class="br.usp.ime.vision.dataset.util.Constants" scope="session" />
+
+<c:choose>
+
+	<c:when test="${!userHasViewPermission}">
+		<s:action name="UnauthorizedAction" executeResult="true" />
+	</c:when>
+
+	<c:otherwise>
+
+		<s:set var="deleteImageText">
+			<s:text name="deleteImage" />
+		</s:set>
+
+		<s:set var="deleteTagText">
+			<s:text name="deleteImageTag" />
+		</s:set>
+		<s:set var="renameTagText">
+			<s:text name="renameTag" />
+		</s:set>
+		<s:set var="deleteAnnotationText">
+			<s:text name="deleteAnnotation" />
+		</s:set>
+		<s:set var="editAnnotationText">
+			<s:text name="editAnnotation" />
+		</s:set>
+		<s:set var="annotationFromTagText">
+			<s:text name="annotationFromTag" />
+		</s:set>
+
+		<tiles:insertDefinition name="templateVisionDataset">
+			<tiles:putAttribute name="content">
+
+				<h1>
+					<s:url action="ListAlbums" var="listAlbums" />
+					<a href="${listAlbums}"><s:text name="listAlbums" /> </a> <img
+						src="img/icons/breadcrumb.png" alt=">" />
+
+					<c:forEach items="${image.album.albumsChain}" var="albumChain">
+
+						<s:url var="linkAction" action="AlbumDetail">
+							<s:param name="albumId">${albumChain.id}</s:param>
+						</s:url>
+						<a href="${linkAction}"> ${albumChain.name} </a>
+
+						<img src="img/icons/breadcrumb.png" alt=">" />
+
+					</c:forEach>
+
+					<s:text name="image" />
+					${image.id}
+				</h1>
+
+				<div class="section">
+
+					<s:set var="menu">
+						<s:text name="menu" />
+					</s:set>
+					<v:optionsMenu name="${menu}" icon="img/icons/menu.png">
+
+						<ul>
+
+							<c:if test="${!empty image.tags || userHasCreatePermission}">
+
+								<li class="tagOption show"><a href="#"
+									onclick="showTags();"> <img src="img/icons/tag.png"
+										alt="<s:text name="showImageTags"/>" /> <s:text
+											name="showImageTags" /> </a></li>
+
+								<li class="tagOption hide" style="display: none"><a
+									href="#" onclick="hideTags();"> <img
+										src="img/icons/tag.png" alt="<s:text name="hideImageTags"/>" />
+										<s:text name="hideImageTags" /> </a></li>
+
+							</c:if>
+
+							<c:if
+								test="${!empty image.annotations || userHasCreatePermission}">
+
+								<li class="annotationOption show"><a href="#"
+									onclick="showAnnotations();"> <img
+										src="img/icons/annotation.png"
+										alt="<s:text name="showImageAnnotations"/>" /> <s:text
+											name="showImageAnnotations" /> </a></li>
+
+								<li class="annotationOption hide" style="display: none"><a
+									href="#" onclick="hideAnnotations();"> <img
+										src="img/icons/annotation.png"
+										alt="<s:text name="hideImageAnnotations"/>" /> <s:text
+											name="hideImageAnnotations" /> </a></li>
+
+							</c:if>
+							<c:if test="${!empty image.attachments}">
+
+								<li class="attachmentOption show"><a href="#"
+									onclick="showAttachments();"> <img
+										src="img/icons/attachment.png"
+										alt="<s:text name="showImageAttachments"/>" /> <s:text
+											name="showImageAttachments" /> </a></li>
+
+								<li class="attachmentOption hide" style="display: none"><a
+									href="#" onclick="hideAttachments();"> <img
+										src="img/icons/attachment.png"
+										alt="<s:text name="hideImageAttachments"/>" /> <s:text
+											name="hideImageAttachments" /> </a></li>
+
+							</c:if>
+							<li><s:url action="SegmentIt" var="segmentitUrl">
+									<s:param name="imageId">${image.id}</s:param>
+								</s:url> <a href="${segmentitUrl}"> <img
+									alt="<s:text name="segmentitOpen" />"
+									src="img/icons/segmentit.png" /> <s:text name="segmentitOpen" />
+							</a>
+							</li>
+						    <li class="script"><a
+								href="#" onclick="showScript();"> <img
+									src="img/console.png"
+									alt="<s:text name="showScriptBox"/>" /> <s:text
+										name="showScriptBox" /> </a>
+                            </li>
+
+
+							<c:if test="${userHasCreatePermission}">
+								<li><s:url action="DeleteImage" var="deleteImage">
+										<s:param name="imageId">${image.id}</s:param>
+										<s:param name="albumId">${image.albumId}</s:param>
+									</s:url> <a href="#"
+									onclick="confirmDelete('${deleteImageText}', ${image.id}, '${deleteImage}'); return false;">
+										<img alt="${deleteImageText}" src="img/icons/delete.png" />${deleteImageText}
+								</a></li>
+							</c:if>
+
+						</ul>
+
+					</v:optionsMenu>
+
+
+					<c:if test="${!empty image.tags || userHasCreatePermission}">
+
+						<table class="data-view tags">
+							<tr>
+								<th><img src="img/icons/tag.png"
+									alt="<s:text name="imageTags"/>" /> <s:text name="imageTags" />
+								</th>
+							</tr>
+							<tr>
+								<td><c:if test="${userHasCreatePermission}">
+										<s:url action="AddImageTagData" var="addImageTag">
+											<s:param name="imageId">${image.id}</s:param>
+										</s:url>
+										<s:set var="addImageTagText">
+											<s:text name="addImageTag" />
+										</s:set>
+										<a href="${addImageTag}" title="${addImageTagText}"><img
+											alt="${addImageTagText}" src="img/icons/add-tag.png" /> </a>
+									</c:if> <c:forEach var="tag" items="${image.tags}">
+										<span class="tag"> ${tag.tagName} <c:if
+												test="${userHasCreatePermission}">
+												<s:url action="DeleteImageTag" var="deleteTag">
+													<s:param name="tagId">${tag.id}</s:param>
+													<s:param name="imageId">${image.id}</s:param>
+												</s:url>
+												<s:url action="RenameImageTagData" var="renameTag">
+													<s:param name="tagId">${tag.id}</s:param>
+													<s:param name="imageId">${image.id}</s:param>
+												</s:url>
+												<s:url action="AnnotationFromTagData"
+													var="annotationFromTag">
+													<s:param name="tagId">${tag.id}</s:param>
+													<s:param name="imageId">${image.id}</s:param>
+												</s:url>
+												<span class="tagOptions"> <a href="#"
+													onclick="confirmDelete('${deleteTagText }', '${tag.tagName}','${deleteTag}'); return false;"
+													title="${deleteTagText}"> <img alt="${deleteTagText}"
+														src="img/icons/remove-tag.png" /> </a> <a href="${renameTag}"
+													title="${renameTagText}"> <img alt="${renameTagText}"
+														src="img/icons/edit-tag.png" /> </a> <a
+													href="${annotationFromTag}"
+													title="${annotationFromTagText}"> <img
+														alt="${renameTagText}" src="img/icons/annotation.png" />
+												</a> </span>
+											</c:if> </span>
+									</c:forEach></td>
+							</tr>
+						</table>
+
+					</c:if>
+
+					<c:if test="${!empty image.annotations || userHasCreatePermission}">
+
+						<table class="data-view annotations">
+							<tr>
+								<th><img src="img/icons/annotation.png"
+									alt="<s:text name="imageAnnotations"/>" /> <s:text
+										name="imageAnnotations" /></th>
+							</tr>
+							<tr>
+								<td><c:if test="${userHasCreatePermission}">
+										<s:url action="AnnotateImageData" var="annotateImage">
+											<s:param name="imageId">${image.id}</s:param>
+										</s:url>
+										<s:set var="annotateImageText">
+											<s:text name="annotateImage" />
+										</s:set>
+										<a href="${annotateImage}" title="${annotateImageText}"> <img
+											alt="${annotateImageText}" src="img/icons/add-annotation.png" />
+										</a>
+									</c:if> <c:forEach var="annotation" items="${image.annotations}">
+										<span class="tag"
+											onmouseover="showAnnotation(${annotation.id});"
+											onmouseout="hideAnnotation(${annotation.id});">
+											${annotation.tagName} <c:if test="${userHasCreatePermission}">
+												<s:url action="DeleteAnnotation" var="deleteAnnotation">
+													<s:param name="tagId">${annotation.id}</s:param>
+													<s:param name="imageId">${image.id}</s:param>
+												</s:url>
+												<s:url action="EditAnnotationData" var="editAnnotation">
+													<s:param name="tagId">${annotation.id}</s:param>
+													<s:param name="imageId">${image.id}</s:param>
+												</s:url>
+												<span class="tagOptions"> <a href="#"
+													onclick="confirmDelete('${deleteAnnotationText }', '${annotation.tagName}','${deleteAnnotation}'); return false;"
+													title="${deleteAnnotationText}"> <img
+														alt="${deleteAnnotationText}"
+														src="img/icons/remove-annotation.png" /> </a> <a
+													href="${editAnnotation}" title="${editAnnotationText}">
+														<img alt="${editAnnotationText}"
+														src="img/icons/edit-annotation.png" /> </a> </span>
+											</c:if> </span>
+									</c:forEach></td>
+							</tr>
+						</table>
+
+					</c:if>
+					<c:if test="${!empty image.attachments}">
+						<table class="data-view attachments">
+							<tr>
+								<th><img src="img/icons/attachment.png"
+									alt="<s:text name="imageAttachments"/>" /> <s:text
+										name="imageAttachments" /></th>
+							</tr>
+							<tr>
+								<td><c:forEach var="attachment"
+										items="${image.attachments}">
+										<span class="attachment"> <a
+											href="${attachment.uri}/file"> <img
+												src="img/icons/attachment.png"
+												alt="<s:text name="imageAttachment"/>" />
+												${attachment.name} </a> </span>
+									</c:forEach></td>
+							</tr>
+						</table>
+					</c:if>
+
+
+
+
+					<div id="annotationContainer">
+						<img src="${image.imageURL}" id="image" alt="${image.id}" />
+						<c:forEach items="${image.annotations}" var="annotation">
+							<div id="${annotation.id}" class="annotation"
+								style="top: ${annotation.y}px; left: ${annotation.x}px; width: ${annotation.width}px; height: ${annotation.height}px;">
+								${annotation.tagName}</div>
+						</c:forEach>
+
+						<p class="uri" onmouseover="showUriLink();"
+							onmouseout="hideUriLink();">
+							<img src="img/icons/link.png" alt="<s:text name="imageUri"/>" />
+							<a href="${image.uri}" class="uriLink"> ${image.uri}</a>
+
+						</p>
+                        
+					<c:if test="${userHasCreatePermission}">
+					    <s:form class="scriptBox" action="runscript" >
+                        <s:textarea class="scriptBox" name="script" label="Script to run" rows="24" cols="50"/>
+                        <s:submit />
+                        </s:form>
+                       
+					</c:if>
+
+					</div>
+
+
+
+				</div>
+
+				<div class="confirmDialog" id="confirmDeleteDialog">
+					<p class="warning">
+						<s:text name="operationCannotBeUndone" />
+					</p>
+				</div>
+
+			</tiles:putAttribute>
+
+			<tiles:putAttribute name="pageScript">
+				animateMenu();
+				$(document).ready(function() {
+					if($.cookie("showAnnotations")){
+						showAnnotations(true);
+					} else {
+						$("div.annotation").hide();
+					}
+					
+					if($.cookie("showAttachments")){
+						showAttachments(true);
+					}
+					
+					if($.cookie("showTags")){
+						showTags(true);
+					}
+					
+				});
+			</tiles:putAttribute>
+
+		</tiles:insertDefinition>
+
+	</c:otherwise>
+
+</c:choose>

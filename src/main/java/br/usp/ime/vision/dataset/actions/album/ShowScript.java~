@@ -1,0 +1,82 @@
+package br.usp.ime.vision.dataset.actions.album;
+
+import br.usp.ime.vision.dataset.dao.DAOFactory;
+import br.usp.ime.vision.dataset.entities.Album;
+import br.usp.ime.vision.dataset.entities.Image;
+import java.io.*;
+
+/**
+ * Action for script running and visualization.
+ * 
+ * @author André Kanayama
+ */
+public class ShowScript extends AlbumAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private int scriptId;
+    
+    public String script;
+
+    public String execute() {
+    
+        //setScript(getScript());
+        BufferedWriter writer = null;
+        try{
+            writer = new BufferedWriter( new FileWriter("/tmp/script.py"));
+            writer.write(script);
+
+        }
+        catch ( IOException e){
+        }
+        finally{
+            try{
+                if ( writer != null)
+                writer.close( );
+            }
+            catch ( IOException e){
+            }
+        }
+        try
+        {
+            Runtime r = Runtime.getRuntime();
+            Process p = r.exec("python /tmp/script.py");
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            p.waitFor();
+            String message = "";
+            while (br.ready())
+                message+=br.readLine();
+
+        }
+        catch (Exception e)
+        {
+		String cause = e.getMessage();
+		if (cause.equals("python: not found"))
+			System.out.println("No python interpreter found.");
+        }
+        setScript(message);
+        return "SUCCESS";
+    }
+
+    public String getScript() {
+        return script;
+    }
+
+    public void setScript(String script) {
+        this.script = script;
+    }
+    
+    /*public String execute() {
+        setScript(getScript());
+        return "SUCCESS";
+    }
+
+    public String getScript() {
+        return script;
+    }
+
+    public void setScript(String script) {
+        this.script = script;
+    }*/
+
+}

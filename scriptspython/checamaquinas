@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#Criado 17/02/2006
+
+import getpass
+from socket import *
+import sys
+
+host = '192.168.231.203'
+port = 3433
+buf_size = 1024
+addr = (host,port)
+
+sock_client = socket(AF_INET,SOCK_STREAM)
+
+try:
+	sock_client.connect(addr)
+	#sock_client.send(username)
+	print "connected"
+	mem = sock_client.recv(buf_size)
+	cpu = sock_client.recv(buf_size)
+	print "received"
+	sock_client.close()
+
+	if mem == '':
+		status = "oh no"
+except:
+	mem = None
+
+if mem == None:
+	print "STATUS NÃO PODE SER CONSULTADO NO MOMENTO"
+	quit()
+elif mem == "oh no":
+	print "ERRO BIZARRO"
+	quit()
+
+mem = float(mem)
+cpu = float(cpu)
+print mem, cpu

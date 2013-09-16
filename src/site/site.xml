@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project>
+  <body>
+    <menu name="Overview">
+      <item name="Introduction" href="index.html"/>
+      <item name="Objetivos" href="objetivos.html"/>
+      <item name="Desenvolvimento" href="usage.html"/>
+      <item name="Arquitetura" href="faq.html"/>
+      <item name="FAQ" href="faq.html"/>
+  </menu>
+  <menu ref="modules" />
+  <menu ref="reports" />
+    <menu name="Examples">
+      <item name="Showing Failure Tests" href="examples/show-failures.html"/>
+      <item name="Changing Report Name" href="examples/changing-report-name.html"/>
+      <item name="Configuring the Output Location of the Report" href="examples/report-custom-location.html"/>
+      <item name="Source Code Cross Reference" href="examples/cross-referencing.html"/>
+    </menu>
+  </body>
+</project>

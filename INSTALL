@@ -1,0 +1,78 @@
+﻿--------- Development Environment -------
+
+
+==Initial setup==
+
+
+	Install mercurial, postgresql, and maven (>= 3.0)
+
+
+	Clone repository
+		hg clone https://bitbucket.org/rafaellg/visiondataset
+
+
+	Copy config files to /etc/visionDataset/conf/
+	The config files are:
+		sudo mkdir -p /etc/visionDataset/conf/
+		sudo cp src/main/resources/*.properties /etc/visionDataset/conf/
+
+	Create a directory for images (can be configured in config.properties):
+		sudo mkdir -p /var/local/visionDataset/{attachments,images,scripts,thumbnails}
+	Copy thumbnails.sh to scripts
+		sudo cp src/native/thumbnail.sh /var/local/visionDataset/scripts/
+	Make sure <OS user> can write files into these directories
+		sudo chown `whoami` -R /var/local/visionDataset/
+
+==Database setup==
+
+
+  Change your current directory to project's folder
+    cd visiondataset
+	Add a postgreSQL role allowing it to create databases “-d” and assigning a new password to this role "-P", set it as "visionDataset"
+		createuser -d -P visionDataset
+	Create a new database
+		createdb visionDataset
+	Connect to database
+		psql -d visionDataset -U visionDataset
+	Output
+		psql (9.1.2)
+		Type "help" for help.
+
+
+		visionDataset=> 
+	Run script
+		visionDataset=> \i src/sql/visionDatabase.sql
+
+
+==Running application==
+
+
+	Execute command for development environment
+		mvn tomcat:run
+
+
+--------- Production Environment -------
+
+
+	Copy config files to /etc/visionDataset/conf/
+	The config files are:
+		sudo mkdir -p /etc/visionDataset/conf/
+		sudo cp src/main/resources/*.properties /etc/visionDataset/conf/
+
+	Create a directory for images (can be configured in config.properties):
+		sudo mkdir -p /var/local/visionDataset/{attachments,images,scripts,thumbnails}
+	Copy thumbnails.sh to scripts
+		sudo cp src/native/thumbnail.sh /var/local/visionDataset/scripts/
+	Make sure tomcat can write files into these directories
+		sudo chown tomcat6:tomcat6 -R /var/local/visionDataset/
+
+	Edit pom.xml changing the tomcat password and url.
+	Edit src/main/webapp/META-INF/context.xml setting database password
+
+	Create the production database with src/sql/visionDatabase.sql script.
+   
+	Deploy the  .war created by:
+		mvn package
+	Or using:
+		mvn deploy
+

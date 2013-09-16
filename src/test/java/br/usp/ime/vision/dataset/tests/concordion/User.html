@@ -1,0 +1,84 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+<link href="../concordion.css" rel="stylesheet" type="text/css" />
+<body>
+
+	<h1>User</h1>
+
+	<h2>Usernames</h2>
+
+	<div>
+		Valid usernames must not be empty and contain only:
+		<ul>
+			<li>alphanumeric characters (0...9, a...z, A...Z)</li>
+			<li>_</li>
+			<li>.</li>
+		</ul>
+
+		Valid usernames must not contain:
+		<ul>
+			<li>blank spaces</li>
+			<li>special characters</li>
+		</ul>
+	</div>
+
+	<div class="example">
+
+		<h3>Examples</h3>
+
+		<table>
+			<tr>
+				<th>Username</th>
+				<th>is valid</th>
+			</tr>
+			<tr>
+				<td concordion:set="#username">username</td>
+				<td concordion:assertEquals="validUsername(#username)">true</td>
+			</tr>
+			<tr>
+				<td concordion:set="#username">user.name</td>
+				<td concordion:assertEquals="validUsername(#username)">true</td>
+			</tr>
+			<tr>
+				<td concordion:set="#username">user_name</td>
+				<td concordion:assertEquals="validUsername(#username)">true</td>
+			</tr>
+			<tr>
+				<td concordion:set="#username">123username</td>
+				<td concordion:assertEquals="validUsername(#username)">true</td>
+			</tr>
+			<tr>
+				<td concordion:set="#username">MyUsername</td>
+				<td concordion:assertEquals="validUsername(#username)">true</td>
+			</tr>
+			<tr>
+				<td><span concordion:set="#username"> </span><span
+					class="commentary">(blank space)</span></td>
+				<td concordion:assertEquals="validUsername(#username)">false</td>
+			</tr>
+			<tr>
+				<td><span concordion:set="#username"></span><span
+					class="commentary">(empty)</span></td>
+				<td concordion:assertEquals="validUsername(#username)">false</td>
+			</tr>
+			<tr>
+				<td concordion:set="#username">user name</td>
+				<td concordion:assertEquals="validUsername(#username)">false</td>
+			</tr>
+			<tr>
+				<td concordion:set="#username">não_válido</td>
+				<td concordion:assertEquals="validUsername(#username)">false</td>
+			</tr>
+			<tr>
+				<td concordion:set="#username">user:name</td>
+				<td concordion:assertEquals="validUsername(#username)">false</td>
+			</tr>
+			<tr>
+				<td concordion:set="#username">user@email.com</td>
+				<td concordion:assertEquals="validUsername(#username)">false</td>
+			</tr>
+		</table>
+
+	</div>
+
+</body>
+</html>

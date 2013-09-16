@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN" "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+
+<taglib>
+	<tlibversion>1.0</tlibversion>
+	<jspversion>1.1</jspversion>
+	<shortname>tve</shortname>
+	<info>Taglib do projeto TV Escola.</info>
+
+	<tag>
+		<name>info</name>
+		<tagclass>br.usp.ime.vision.dataset.taglib.InfoBox</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<info>Creates an info box</info>
+	</tag>
+
+	<tag>
+		<name>thumbnail</name>
+		<tagclass>br.usp.ime.vision.dataset.taglib.Thumbnail</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<info>Shows a thumbnail with a link to the image and available options</info>
+		<attribute>
+			<name>image</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>delete</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>deleteText</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>miniThumbnail</name>
+		<tagclass>br.usp.ime.vision.dataset.taglib.MiniThumbnail</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<info>Shows a mini thumbnail of the image</info>
+		<attribute>
+			<name>image</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>albumsUserCreatePermission</name>
+		<tagclass>br.usp.ime.vision.dataset.taglib.AlbumsUserCreatePermission</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<info>Creates a tree of the albums that the user has create permission</info>
+		<attribute>
+			<name>userId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>currentAlbumId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>optionsMenu</name>
+		<tagclass>br.usp.ime.vision.dataset.taglib.OptionsMenu</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<info>Creates an expandable/colapsable menu</info>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>icon</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+</taglib>

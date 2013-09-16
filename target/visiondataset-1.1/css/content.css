@@ -1,0 +1,223 @@
+#content {
+	padding: 0 10px;
+	font-size: 12px;
+}
+
+#content .section {
+	padding: 0 20px 0 20px;
+}
+
+#content table.data-view {
+	background-color: #CCCCCC;
+	margin-bottom: 20px;
+}
+
+#content table.data-view a {
+	text-decoration: none;
+}
+
+#content table.data-view th {
+	padding: 5px;
+}
+
+#content table.data-view th img {
+	vertical-align: middle;
+}
+
+#content table.data-view td {
+	background-color: #DDDDDD;
+}
+
+#content table.data-view tr:hover td {
+	background-color: #EEEEEE;
+}
+
+#content table.data-view td {
+	padding: 5px;
+}
+
+#content table.data-view td img {
+	vertical-align: middle;
+}
+
+#content #infoHome {
+	background-color: #AADDFF;
+	border: 1px solid #0000FF;
+	color: #0000FF;
+	padding: 0 10px;
+	float: right;
+}
+
+.confirmDialog {
+	display: none;
+}
+
+.thumbnail {
+	position: relative;
+	display: inline-block;
+}
+
+.thumbnail .thumbnailOptions {
+	display: none;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	margin: 10px;
+}
+
+#users table td {
+	vertical-align: top;
+}
+
+.detailUser {
+	color: #AAAAAA;
+}
+
+.dndContainer {
+	min-width: 200px;
+	border: 1px dashed #999999;
+	padding: 10px 20px 10px 30px;
+	margin-top: 5px;
+}
+
+.ui-draggable {
+	cursor: move;
+}
+
+.ui-draggable-dragging {
+	opacity: 0.75;
+}
+
+.drophover {
+	background-color: #DDDDDD;
+	border: 1px double #000000;
+}
+
+.albumHandler {
+	background: url("../img/icons/album.png") no-repeat 7px #dddddd;
+	padding: 10px 10px 10px 37px;
+	margin: 0 10px 10px 0;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.albumHandler.drophover,.subAlbumHandler.drophover,.miniThumbnailHandler.drophover
+	{
+	background-color: #EEEEEE;
+	border: 1px dashed #000000;
+}
+
+.subAlbumHandler {
+	background: url("../img/icons/album.png") no-repeat 7px #ddddff;
+	padding: 10px 10px 10px 37px;
+	margin: 0 10px 10px 0;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.subAlbumHandler img {
+	vertical-align: middle;
+}
+
+.miniThumbnailHandler {
+	display: inline-block;
+	vertical-align: top;
+}
+
+table#moveContent {
+	width: 100%;
+}
+
+table#moveContent td {
+	vertical-align: top;
+	width: 50%;
+}
+
+table#moveContent img.miniThumbnail {
+	margin: 0 10px 10px 0;
+	vertical-align: top;
+}
+
+table#moveContent .dndContainer {
+	padding: 10px 0 0 10px;
+	min-height: 20px;
+	margin: 0 10px 10px 0;
+}
+
+table#moveContent ul ul {
+	padding-left: 14px;
+}
+
+#content table.tags,#content table.annotations,#content table.attachments,.uriLink, .scriptBox
+	{
+	display: none;
+}
+
+#content table.tags tr:hover td,#content table.annotations tr:hover td,#content table.attachments tr:hover td
+	{
+	background-color: #DDDDDD;
+}
+
+#content table.tags td,#content table.annotations td,#content table.attachments td
+	{
+	padding: 10px;
+}
+
+span.tag {
+	border: 1px solid #CCCCCC;
+	margin: 5px;
+	padding: 5px;
+	margin: 5px;
+	display: inline-block;
+}
+
+span.tag span.tagOptions {
+	display: none;
+}
+
+span.tag:hover {
+	background-color: #EEEEEE;
+}
+
+span.tag:hover  span.tagOptions {
+	display: inline;
+}
+
+#annotationContainer {
+	position: relative;
+	display: inline-block;
+}
+
+#annotationContainer .annotation {
+	border: 1px dashed #000000;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#annotationContainer .annotation:hover,#annotationContainer .selected {
+	background: #FFFFFF;
+	opacity: 0.75;
+	font-weight: bold;
+}
+
+ul.multiTag {
+	list-style: none;
+	margin: 0 0 0 5px;
+	padding: 0;
+}
+
+ul.multiTag img {
+	margin-right: 5px;
+}
+
+.tagContainer  .miniThumbnailHandler {
+	background-color: #DDDDDD;
+	margin: 0 10px 10px 0;
+	padding: 10px;
+}
+.scriptBox {
+width:300px;
+height:80px;
+border: 1px solid #000099;
+}

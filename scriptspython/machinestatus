@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+import subprocess
+import socket
+import daemon
+
+# Determines IP Address
+HOSTNAME = '' # Symbolic name meaning all available interfaces
+PORT = 3433
+BUFSIZ = 1024
+
+# This function takes Bash commands and returns them
+def runBash(cmd):
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    out = p.stdout.read().strip()
+    return out  # This is the stdout from the shell command
+
+ADDR = (HOSTNAME, PORT)
+
+# Function to control option parsing in Python
+def controller():
+	serversock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	while True:
+		try:
+			serversock.bind(ADDR)
+			break
+		except:
+			print "Error: failed to bind to port %s, trying again in 10 seconds." % PORT
+			import time
+			time.sleep(10)
+	serversock.listen(2)
+	while True:
+		clientsock, addr = serversock.accept()
+	#	login = clientsock.recv(BUFSIZ).strip()
+		clientsock.send(runBash('python /root/getfreeram.py'))
+		clientsock.send(runBash('python /root/getfreecpu.py'))
+		#clientsock.send("10")
+		clientsock.close()
+
+with daemon.DaemonContext():
+    controller()
